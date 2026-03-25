@@ -3,6 +3,7 @@ import { ItemPaster } from './components/ItemPaster';
 import { ItemViewer } from './components/ItemViewer';
 import { DivineReport } from './components/DivineReport';
 import type { PoeItem, PoeModifierRoll } from './lib/poe-parser';
+import { IconBrandGithub } from '@tabler/icons-react';
 
 function App() {
     const [item, setItem] = useState<PoeItem | null>(() => {
@@ -115,6 +116,27 @@ function App() {
                         </div>
                     </div>
                 </div>
+
+                <footer
+                    className="animate-fade-in-up mt-16 border-t border-zinc-800/50 pt-8 text-center"
+                    style={{ animationDelay: '0.3s' }}
+                >
+                    <div className="flex flex-col items-center justify-center gap-4">
+                        <a
+                            href="https://github.com/mastondzn/divine-calc"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm text-zinc-400 transition-colors duration-200 hover:text-(--accent-gold)"
+                        >
+                            <IconBrandGithub className="h-4 w-4" />
+                            <span>mastondzn/divine-calc</span>
+                        </a>
+                        <p className="mx-auto max-w-lg text-xs tracking-wide text-zinc-600">
+                            Not affiliated with Grinding Gear Games. Path of Exile is a registered
+                            trademark of Grinding Gear Games.
+                        </p>
+                    </div>
+                </footer>
             </div>
         </div>
     );

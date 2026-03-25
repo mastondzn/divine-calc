@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { parsePoeItemText, type PoeItem } from '../lib/poe-parser';
-import { AlertTriangle, ClipboardPaste } from 'lucide-react';
+import { IconAlertTriangle, IconClipboard } from '@tabler/icons-react';
 
 export function ItemPaster({
     initialText = '',
@@ -39,7 +39,7 @@ export function ItemPaster({
     return (
         <div className="poe-glass poe-border poe-glow rounded-xl p-5 transition-all duration-300 hover:border-(--poe-border-dim)">
             <label className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-[0.15em] text-(--accent-gold) uppercase">
-                <ClipboardPaste className="h-3.5 w-3.5 opacity-70" />
+                <IconClipboard className="h-3.5 w-3.5 opacity-70" />
                 Paste Item Data
             </label>
             <div className="relative">
@@ -51,7 +51,7 @@ export function ItemPaster({
                 />
                 {error && (
                     <div className="animate-fade-in-up absolute -bottom-11 left-0 z-10 flex w-full items-center gap-1.5 rounded-lg border border-red-900/40 bg-red-950/60 px-3 py-2 text-xs font-medium text-red-400 backdrop-blur-sm">
-                        <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-red-500" />
+                        <IconAlertTriangle className="h-3.5 w-3.5 shrink-0 text-red-500" />
                         {error}
                     </div>
                 )}

@@ -1,5 +1,4 @@
 import type { PoeItem, PoeModifierRoll, PoeModifier } from '../lib/poe-parser';
-import { Sparkles } from 'lucide-react';
 
 const PoeSeparator = () => (
     <div className="my-1 h-px w-full bg-linear-to-r from-transparent via-(--poe-border-dim) to-transparent" />
@@ -17,7 +16,6 @@ export function ItemViewer({
     if (!item) {
         return (
             <div className="item-card poe-border flex h-125 w-full flex-col items-center justify-center gap-3 rounded-lg bg-[rgba(12,12,12,0.5)] text-zinc-600">
-                <Sparkles className="animate-float h-8 w-8 text-zinc-700 opacity-60" />
                 <span className="font-cinzel text-sm tracking-wide italic">
                     Awaiting item data…
                 </span>
