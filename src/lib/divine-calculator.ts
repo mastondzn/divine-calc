@@ -4,6 +4,7 @@ export interface DivineCalculationResult {
     currentAveragePercentile: number;
     chanceToImprove: number;
     chanceEqualOrBetter: number;
+    chancePerfect: number;
     selectedRollsCount: number;
 }
 
@@ -22,6 +23,7 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
             currentAveragePercentile: 0,
             chanceToImprove: 0,
             chanceEqualOrBetter: 0,
+            chancePerfect: 0,
             selectedRollsCount: 0,
         };
     }
@@ -45,6 +47,7 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
             currentAveragePercentile,
             chanceToImprove: 0,
             chanceEqualOrBetter: 100,
+            chancePerfect: 100,
             selectedRollsCount: selectedRolls.length,
         };
     }
@@ -80,10 +83,19 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
         probAllExactlyEqual *= 1 / totalValues;
     }
 
+    const chancePerfect = selectedRolls.reduce((acc, roll) => {
+        if (roll.max === roll.min) {
+            return acc * 1;
+        } else {
+            return (acc * 1) / (roll.max - roll.min + 1);
+        }
+    }, 1);
+
     return {
         currentAveragePercentile,
         chanceToImprove: Math.max(0, (probAllEqualOrBetter - probAllExactlyEqual) * 100),
         chanceEqualOrBetter: probAllEqualOrBetter * 100,
+        chancePerfect: chancePerfect * 100,
         selectedRollsCount: selectedRolls.length,
     };
 }

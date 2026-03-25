@@ -17,6 +17,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
     const avgPercentile = Math.round(result.currentAveragePercentile * 100);
     const chance = result.chanceToImprove.toFixed(2);
     const chanceEqual = result.chanceEqualOrBetter.toFixed(2);
+    const chancePerfect = result.chancePerfect.toFixed(5);
 
     let offPerfect = 0;
     selectedRolls.forEach((roll) => {
@@ -130,7 +131,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                     </div>
 
                     {/* Strictly Better */}
-                    <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
                             <p
                                 className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}
@@ -146,6 +147,30 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                                 className={`text-3xl font-black tracking-tight ${chanceStyle.text}`}
                             >
                                 {chance}
+                            </span>
+                            <span className={`ml-0.5 text-xs font-bold ${chanceStyle.text}`}>
+                                %
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Perfect */}
+                    <div className="flex items-center justify-between py-3">
+                        <div>
+                            <p
+                                className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}
+                            >
+                                Perfect
+                            </p>
+                            <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
+                                Chance to hit perfect rolls
+                            </p>
+                        </div>
+                        <div className="flex items-baseline">
+                            <span
+                                className={`text-3xl font-black tracking-tight ${chanceStyle.text}`}
+                            >
+                                {chancePerfect}
                             </span>
                             <span className={`ml-0.5 text-xs font-bold ${chanceStyle.text}`}>
                                 %

@@ -252,11 +252,9 @@ export function ItemViewer({
                 )}
 
                 {item.modifiers.filter((m) => m.type === 'suffix').length > 0 && (
-                    <>
-                        <div>
-                            {item.modifiers.filter((m) => m.type === 'suffix').map(renderModifier)}
-                        </div>
-                    </>
+                    <div>
+                        {item.modifiers.filter((m) => m.type === 'suffix').map(renderModifier)}
+                    </div>
                 )}
 
                 <PoeSeparator />

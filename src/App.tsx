@@ -73,8 +73,8 @@ function App() {
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')] opacity-[0.015]" />
             </div>
 
-            <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-10 sm:px-6 sm:py-16">
-                <header className="animate-fade-in-up mb-10 text-center sm:mb-14">
+            <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-8">
+                <header className="animate-fade-in-up mb-8 text-center">
                     <h1 className="font-cinzel mb-3 bg-[linear-gradient(135deg,#c9a84c,#f5deb3,#d4a843,#a07830)] bg-clip-text text-3xl font-bold tracking-wide text-transparent sm:text-4xl md:text-5xl">
                         Divine Calculator
                     </h1>
