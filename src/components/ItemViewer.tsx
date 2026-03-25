@@ -103,7 +103,8 @@ export function ItemViewer({
                             const isSelected = selectedRolls.has(roll.id);
                             const isFixed = roll.min === roll.max;
                             const isFractured = mod.isFractured ?? false;
-                            const isDisabled = isFixed || isFractured;
+                            const isImplicit = mod.type === 'implicit';
+                            const isDisabled = isFixed || isFractured || isImplicit;
                             const percentile = isFixed
                                 ? 100
                                 : Math.round(
@@ -139,7 +140,9 @@ export function ItemViewer({
                                                 ? 'Fractured modifiers cannot be divined.'
                                                 : isFixed
                                                   ? 'Mod has fixed value, cannot be divined.'
-                                                  : `Current Roll: ${percentile}%`
+                                                  : isImplicit
+                                                    ? 'Implicit modifiers cannot be divined.'
+                                                    : `Current Roll: ${percentile}%`
                                         }
                                     >
                                         <span className="text-sm font-bold">{roll.value}</span>
@@ -154,7 +157,6 @@ export function ItemViewer({
                                             </span>
                                         )}
                                     </label>
-                                    {/* Percentile bar */}
                                     {!isFixed && (
                                         <div
                                             className="percentile-bar mt-0.5 w-full"

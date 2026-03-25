@@ -76,8 +76,8 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             <p className="text-xs font-semibold tracking-wider text-zinc-400 uppercase">
                                 Current Quality
                             </p>
-                            <p className="mt-0.5 text-[11px] leading-tight text-zinc-600">
-                                Average percentile of selected mods
+                            <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
+                                Average percentile of selected rolls
                             </p>
                         </div>
                         <div className="flex items-baseline">
@@ -94,8 +94,8 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             <p className="text-xs font-semibold tracking-wider text-zinc-400 uppercase">
                                 Off-Perfect
                             </p>
-                            <p className="mt-0.5 text-[11px] leading-tight text-zinc-600">
-                                Distance from perfect rolls
+                            <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
+                                Numerical distance from perfect rolls
                             </p>
                         </div>
                         <div className="flex items-baseline">
@@ -113,8 +113,8 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             >
                                 Equal or Better
                             </p>
-                            <p className="mt-0.5 text-[11px] leading-tight text-zinc-600">
-                                Hit same or better rolls
+                            <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
+                                Chance to hit the same or better rolls
                             </p>
                         </div>
                         <div className="flex items-baseline">
@@ -138,7 +138,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                                 Strictly Better
                             </p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
-                                Chance of a strictly better roll
+                                Chance to improve at least one of the rolls
                             </p>
                         </div>
                         <div className="flex items-baseline">
