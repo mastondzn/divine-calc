@@ -1,4 +1,9 @@
 import type { PoeItem, PoeModifierRoll, PoeModifier } from '../lib/poe-parser';
+import { Sparkles } from 'lucide-react';
+
+const PoeSeparator = () => (
+    <div className="my-1 h-px w-full bg-linear-to-r from-transparent via-(--poe-border-dim) to-transparent" />
+);
 
 export function ItemViewer({
     item,
@@ -11,11 +16,45 @@ export function ItemViewer({
 }) {
     if (!item) {
         return (
-            <div className="w-full h-125 flex items-center justify-center border border-zinc-800 rounded-lg bg-zinc-950/50 text-zinc-600 italic">
-                No item data found
+            <div className="item-card poe-border flex h-125 w-full flex-col items-center justify-center gap-3 rounded-lg bg-[rgba(12,12,12,0.5)] text-zinc-600">
+                <Sparkles className="animate-float h-8 w-8 text-zinc-700 opacity-60" />
+                <span className="font-cinzel text-sm tracking-wide italic">
+                    Awaiting item data…
+                </span>
             </div>
         );
     }
+
+    const getRarityScheme = (r: string) => {
+        const l = r.toLowerCase();
+        if (l.includes('unique'))
+            return {
+                text: 'text-[#af6025]',
+                gradient: 'bg-gradient-to-b from-[#af6025]/20 via-[#af6025]/5 to-transparent',
+                border: 'border-[#af6025]/60',
+                glow: 'shadow-[0_0_30px_rgba(175,96,37,0.1)]',
+            };
+        if (l.includes('rare'))
+            return {
+                text: 'text-[#ffd700]',
+                gradient: 'bg-gradient-to-b from-[#ffd700]/15 via-[#ffd700]/3 to-transparent',
+                border: 'border-[#ffd700]/50',
+                glow: 'shadow-[0_0_30px_rgba(255,215,0,0.06)]',
+            };
+        if (l.includes('magic'))
+            return {
+                text: 'text-[#8888ff]',
+                gradient: 'bg-gradient-to-b from-[#8888ff]/15 via-[#8888ff]/3 to-transparent',
+                border: 'border-[#8888ff]/50',
+                glow: 'shadow-[0_0_30px_rgba(136,136,255,0.08)]',
+            };
+        return {
+            text: 'text-zinc-200',
+            gradient: 'bg-gradient-to-b from-zinc-700/15 via-zinc-700/3 to-transparent',
+            border: 'border-zinc-600/50',
+            glow: '',
+        };
+    };
 
     const renderModifier = (mod: PoeModifier) => {
         let textColor = 'text-[#8888FF]';
@@ -23,15 +62,17 @@ export function ItemViewer({
         if (mod.isFractured) textColor = 'text-[#A38D6D]';
 
         const getPercentileColor = (pct: number) => {
-            if (pct < 30) return 'text-red-300/80 bg-red-500/10';
-            if (pct < 70) return 'text-orange-300/80 bg-orange-500/10';
-            if (pct < 95) return 'text-green-300/80 bg-green-500/10';
-            return 'text-cyan-300/90 bg-cyan-500/10 font-bold';
+            if (pct < 30) return { text: 'text-red-400/80', bg: 'bg-red-500/10', bar: '#ef4444' };
+            if (pct < 70)
+                return { text: 'text-orange-400/80', bg: 'bg-orange-500/10', bar: '#f97316' };
+            if (pct < 95)
+                return { text: 'text-green-400/80', bg: 'bg-green-500/10', bar: '#22c55e' };
+            return { text: 'text-cyan-300/90', bg: 'bg-cyan-500/10', bar: '#06b6d4' };
         };
 
         return (
-            <div key={mod.id} className="my-3 first:mt-0 relative group text-center">
-                <div className="text-[11px] text-zinc-500 mb-0.5 font-sans tracking-wide">
+            <div key={mod.id} className="group relative my-3 text-center first:mt-0">
+                <div className="mb-0.5 text-[10px] tracking-wider text-zinc-600 uppercase">
                     {mod.isFractured ? 'Fractured ' : mod.isCrafted ? 'Crafted ' : ''}
                     {mod.type.charAt(0).toUpperCase() + mod.type.slice(1)} Modifier
                     {mod.name ? ` "${mod.name}"` : ''}
@@ -39,7 +80,6 @@ export function ItemViewer({
                 </div>
 
                 {mod.lines.map((line, idx) => {
-                    // If the line contains a roll we need to render checkboxes and interactive text
                     const rollsInLine = mod.rolls.filter((r) => line.includes(r.text));
 
                     if (rollsInLine.length === 0) {
@@ -50,13 +90,9 @@ export function ItemViewer({
                         );
                     }
 
-                    // We have rolls in this line, let's split the line by the rolls so we can format them
                     let remainingLine = line;
                     const segments: React.ReactNode[] = [];
 
-                    // Simple string replacement approach for rendering parts
-                    // Note: This assumes roll texts do not overlap and appear in order they are parsed.
-                    // For a robust implementation, we'd split by regex matches.
                     rollsInLine.forEach((roll, rIdx) => {
                         const splitIdx = remainingLine.indexOf(roll.text);
                         if (splitIdx !== -1) {
@@ -73,11 +109,12 @@ export function ItemViewer({
                                 : Math.round(
                                       ((roll.value - roll.min) / (roll.max - roll.min)) * 100,
                                   );
+                            const pctStyle = getPercentileColor(percentile);
 
                             segments.push(
                                 <span
                                     key={roll.id}
-                                    className="inline-flex items-center mx-1 align-middle"
+                                    className="mx-1 inline-flex flex-col items-center align-middle"
                                 >
                                     {!isDisabled && (
                                         <input
@@ -90,16 +127,13 @@ export function ItemViewer({
                                     )}
                                     <label
                                         htmlFor={isDisabled ? undefined : roll.id}
-                                        className={`
-                      inline-flex items-center px-1.5 py-0.5 rounded-md transition-all duration-200 border
-                      ${
-                          isDisabled
-                              ? 'bg-zinc-800/50 border-zinc-700/50 cursor-not-allowed opacity-60'
-                              : isSelected
-                                ? 'bg-amber-500/15 border-amber-500/40 text-amber-200 cursor-pointer'
-                                : 'bg-zinc-800/60 border-zinc-700/60 hover:border-zinc-500 cursor-pointer'
-                      }
-                    `}
+                                        className={`inline-flex items-center rounded-md border px-2 py-0.5 transition-all duration-200 ${
+                                            isDisabled
+                                                ? 'cursor-not-allowed border-zinc-800/50 bg-zinc-900/50 opacity-50'
+                                                : isSelected
+                                                  ? 'animate-border-shimmer cursor-pointer border-amber-500/40 bg-amber-500/10 text-amber-200'
+                                                  : 'cursor-pointer border-zinc-800 bg-zinc-900/60 hover:border-zinc-600 hover:bg-zinc-800/40'
+                                        } `}
                                         title={
                                             isFractured
                                                 ? 'Fractured modifiers cannot be divined.'
@@ -108,16 +142,34 @@ export function ItemViewer({
                                                   : `Current Roll: ${percentile}%`
                                         }
                                     >
-                                        <span className="font-bold">{roll.value}</span>
-                                        <span className="text-zinc-500 text-[10px] ml-1 tracking-tighter">
-                                            ({roll.min}-{roll.max})
+                                        <span className="text-sm font-bold">{roll.value}</span>
+                                        <span className="ml-1 font-mono text-[9px] tracking-tighter text-zinc-600">
+                                            ({roll.min}–{roll.max})
                                         </span>
                                         {!isFixed && (
-                                            <span className={`text-[10px] ml-1.5 px-1 rounded-sm ${getPercentileColor(percentile)}`}>
+                                            <span
+                                                className={`ml-1.5 rounded-sm px-1 py-px text-[9px] font-semibold ${pctStyle.text} ${pctStyle.bg}`}
+                                            >
                                                 {percentile}%
                                             </span>
                                         )}
                                     </label>
+                                    {/* Percentile bar */}
+                                    {!isFixed && (
+                                        <div
+                                            className="percentile-bar mt-0.5 w-full"
+                                            style={{ maxWidth: '100%' }}
+                                        >
+                                            <div
+                                                className="percentile-bar-fill"
+                                                style={{
+                                                    width: `${percentile}%`,
+                                                    backgroundColor: pctStyle.bar,
+                                                    opacity: isSelected ? 0.8 : 0.4,
+                                                }}
+                                            />
+                                        </div>
+                                    )}
                                 </span>,
                             );
 
@@ -132,7 +184,7 @@ export function ItemViewer({
                     return (
                         <div
                             key={idx}
-                            className={`${textColor} text-[15px] leading-snug flex items-center justify-center flex-wrap`}
+                            className={`${textColor} text-center text-[15px] leading-relaxed`}
                         >
                             {segments}
                         </div>
@@ -142,36 +194,31 @@ export function ItemViewer({
         );
     };
 
-    const getRarityColor = (r: string) => {
-        const l = r.toLowerCase();
-        if (l.includes('rare')) return 'text-yellow-400';
-        if (l.includes('magic')) return 'text-blue-400';
-        if (l.includes('unique')) return 'text-orange-500';
-        return 'text-white';
-    };
-
-    const rarityColor = getRarityColor(item.rarity);
+    const rarity = getRarityScheme(item.rarity);
 
     return (
-        <div className="bg-[#0c0c0c] border-2 border-[#a38d6d] rounded-sm p-1 max-w-125 w-full mx-auto shadow-2xl relative">
-            {/* Header */}
-            <div className="text-center pb-2 mx-3">
-                <h2
-                    className={`text-xl font-serif font-bold ${rarityColor} drop-shadow-md tracking-wider mt-2`}
-                >
-                    {item.name}
-                </h2>
-                {item.baseType && item.name !== item.baseType && (
-                    <h3 className={`text-lg font-serif ${rarityColor} drop-shadow-md`}>
-                        {item.baseType}
-                    </h3>
-                )}
-                <div className="border-b-2 border-[#a38d6d] mt-2" />
+        <div
+            className={`item-card poe-border-strong mx-auto w-full max-w-125 rounded-sm bg-[#0a0a0a] p-0.75 ${rarity.glow} transition-shadow duration-500`}
+        >
+            <div className={`${rarity.gradient} rounded-t-[1px]`}>
+                <div className="px-4 py-3 text-center">
+                    <h2
+                        className={`font-cinzel text-xl font-bold ${rarity.text} tracking-wider drop-shadow-md`}
+                    >
+                        {item.name}
+                    </h2>
+                    {item.baseType && item.name !== item.baseType && (
+                        <h3
+                            className={`font-cinzel text-base ${rarity.text} mt-0.5 opacity-80 drop-shadow-sm`}
+                        >
+                            {item.baseType}
+                        </h3>
+                    )}
+                </div>
+                <div className={`h-0.5 ${rarity.border} mx-2 bg-current opacity-30`} />
             </div>
 
-            {/* Body */}
-            <div className="p-4 space-y-4 font-serif text-[#a38d6d]">
-                {/* Implicit & Enchants */}
+            <div className="space-y-3 p-4 text-[#a38d6d]">
                 {item.modifiers.filter((m) => m.type === 'implicit' || m.type === 'enchant')
                     .length > 0 && (
                     <>
@@ -180,35 +227,30 @@ export function ItemViewer({
                                 .filter((m) => m.type === 'implicit' || m.type === 'enchant')
                                 .map(renderModifier)}
                         </div>
-                        <div className="h-px bg-[#a38d6d]/50 w-full" />
+                        <PoeSeparator />
                     </>
                 )}
 
-                {/* Unique */}
                 {item.modifiers.filter((m) => m.type === 'unique').length > 0 && (
                     <>
                         <div>
                             {item.modifiers.filter((m) => m.type === 'unique').map(renderModifier)}
                         </div>
                         {item.modifiers.some((m) => m.type === 'prefix' || m.type === 'suffix') && (
-                            <div className="h-px bg-[#a38d6d]/50 w-full" />
+                            <PoeSeparator />
                         )}
                     </>
                 )}
 
-                {/* Prefixes */}
                 {item.modifiers.filter((m) => m.type === 'prefix').length > 0 && (
                     <>
                         <div>
                             {item.modifiers.filter((m) => m.type === 'prefix').map(renderModifier)}
                         </div>
-                        {item.modifiers.some((m) => m.type === 'suffix') && (
-                            <div className="h-px bg-[#a38d6d]/50 w-full" />
-                        )}
+                        {item.modifiers.some((m) => m.type === 'suffix') && <PoeSeparator />}
                     </>
                 )}
 
-                {/* Suffixes */}
                 {item.modifiers.filter((m) => m.type === 'suffix').length > 0 && (
                     <>
                         <div>
@@ -217,7 +259,8 @@ export function ItemViewer({
                     </>
                 )}
 
-                <div className="text-center text-xs text-zinc-600 pt-2 font-sans italic">
+                <PoeSeparator />
+                <div className="text-center font-sans text-[10px] tracking-wide text-zinc-600 italic">
                     Select ranges above to include them in the divine calculation.
                 </div>
             </div>

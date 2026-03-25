@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { parsePoeItemText, type PoeItem } from '../lib/poe-parser';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, ClipboardPaste } from 'lucide-react';
 
-export function ItemPaster({ 
+export function ItemPaster({
     initialText = '',
-    onParsedItem 
-}: { 
+    onParsedItem,
+}: {
     initialText?: string;
-    onParsedItem: (item: PoeItem | null) => void 
+    onParsedItem: (item: PoeItem | null) => void;
 }) {
     const [text, setText] = useState(initialText);
     const [error, setError] = useState<string | null>(null);
@@ -37,22 +37,25 @@ export function ItemPaster({
     };
 
     return (
-        <div className="w-full flex flex-col gap-2 relative">
-            <label className="text-sm font-semibold text-amber-500/80 uppercase tracking-widest pl-1">
+        <div className="poe-glass poe-border poe-glow rounded-xl p-5 transition-all duration-300 hover:border-(--poe-border-dim)">
+            <label className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-[0.15em] text-(--accent-gold) uppercase">
+                <ClipboardPaste className="h-3.5 w-3.5 opacity-70" />
                 Paste Item Data
             </label>
-            <textarea
-                className={`w-full h-48 p-4 bg-zinc-950/80 border ${error ? 'border-red-500/50 focus:border-red-500/80 focus:ring-red-500/50' : 'border-zinc-800 focus:border-amber-500/50 focus:ring-amber-500/50'} rounded-lg text-zinc-300 font-mono text-xs focus:outline-none focus:ring-1 transition-all placeholder-zinc-700 resize-none shadow-inner`}
-                placeholder="Hover over an item in Path of Exile, press Ctrl+Alt+C, then paste here..."
-                value={text}
-                onChange={handleChange}
-            />
-            {error && (
-                <div className="absolute -bottom-10 left-0 w-full text-red-400 text-xs flex items-center gap-1.5 pl-2 py-1.5 font-medium bg-red-950/40 rounded border border-red-900/50 shadow-sm backdrop-blur-sm z-10">
-                    <AlertTriangle className="w-4 h-4 text-red-500" />
-                    {error}
-                </div>
-            )}
+            <div className="relative">
+                <textarea
+                    className={`h-44 w-full border bg-black/40 p-4 ${error ? 'border-red-500/40 focus:border-red-500/60 focus:ring-red-500/30' : 'border-zinc-800/80 focus:border-(--accent-gold)/40 focus:ring-(--accent-gold)/20'} resize-none rounded-lg font-mono text-xs text-zinc-300 placeholder-zinc-700 transition-all duration-300 focus:ring-1 focus:outline-none`}
+                    placeholder="Hover over an item in Path of Exile, press Ctrl+Alt+C, then paste here..."
+                    value={text}
+                    onChange={handleChange}
+                />
+                {error && (
+                    <div className="animate-fade-in-up absolute -bottom-11 left-0 z-10 flex w-full items-center gap-1.5 rounded-lg border border-red-900/40 bg-red-950/60 px-3 py-2 text-xs font-medium text-red-400 backdrop-blur-sm">
+                        <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-red-500" />
+                        {error}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
