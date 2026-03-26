@@ -27,13 +27,53 @@ export interface PoeItem {
     rawText: string;
 }
 
+/*
+Item Class: Amulets
+Rarity: Rare
+Hate Torc
+Onyx Amulet
+--------
+Quality (Attribute Modifiers): +20% (augmented)
+--------
+Requirements:
+Level: 68
+--------
+Item Level: 86
+--------
+Allocates Inveterate (enchant)
+--------
+{ Implicit Modifier — Attribute  — 20% Increased }
++16(10-16) to all Attributes
+(Attributes are Strength, Dexterity, and Intelligence)
+--------
+{ Prefix Modifier "Virile" (Tier: 2) — Life }
++106(100-114) to maximum Life
+{ Prefix Modifier "Discharging" (Tier: 2) — Damage, Elemental, Lightning, Attack }
+Adds 5(3-6) to 61(57-61) Lightning Damage to Attacks
+{ Master Crafted Prefix Modifier "Upgraded" — Damage }
+42(37-43)% increased Damage while Leeching
+{ Suffix Modifier "of the Multiverse" (Tier: 1) — Attribute  — 20% Increased }
++34(33-35) to all Attributes
+(Attributes are Strength, Dexterity, and Intelligence)
+{ Suffix Modifier "of Dissolution" (Tier: 1) — Damage }
++26(24-26)% to Damage over Time Multiplier
+{ Suffix Modifier "of Archaeology" (Tier: 2) — Drop }
+19(15-20)% increased Rarity of Items found
+
+*/
+
 export function parsePoeItemText(text: string): PoeItem | null {
     if (!text) return null;
     const lines = text
         .trim()
         .split('\n')
         .map((l) => l.trim())
-        .filter((l) => l !== 'Searing Exarch Item' && l !== 'Eater of Worlds Item');
+        .filter(
+            (l) =>
+                l !== 'Searing Exarch Item' &&
+                l !== 'Eater of Worlds Item' &&
+                !(l.startsWith('(') && l.endsWith(')')),
+        );
     if (lines.length < 5) return null;
 
     const itemClassMatch = lines[0].match(/Item Class:\s*(.*)/);
