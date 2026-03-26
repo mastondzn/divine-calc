@@ -13,18 +13,17 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
     }
 
     const result = calculateDivineStats(selectedRolls);
-    console.log(result);
     const avgPercentile = Math.round(result.currentAveragePercentile * 100);
     const chance = result.chanceToImprove.toFixed(2);
     const chanceEqual = result.chanceEqualOrBetter.toFixed(2);
     const chancePerfect = result.chancePerfect.toFixed(2);
 
-    let offPerfect = 0;
-    selectedRolls.forEach((roll) => {
+    const offPerfect = selectedRolls.reduce((acc, roll) => {
         if (roll.max !== roll.min) {
-            offPerfect += Math.abs(roll.max - roll.value);
+            acc += Math.abs(roll.max - roll.value);
         }
-    });
+        return acc;
+    }, 0);
 
     const offPerfectFormatted = parseFloat(offPerfect.toFixed(2));
 

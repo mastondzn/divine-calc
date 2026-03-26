@@ -87,7 +87,7 @@ export function ItemViewer({
                     let remainingLine = line;
                     const segments: React.ReactNode[] = [];
 
-                    rollsInLine.forEach((roll, rIdx) => {
+                    for (const [rIdx, roll] of rollsInLine.entries()) {
                         const splitIdx = remainingLine.indexOf(roll.text);
                         if (splitIdx !== -1) {
                             const before = remainingLine.substring(0, splitIdx);
@@ -165,7 +165,7 @@ export function ItemViewer({
 
                             remainingLine = remainingLine.substring(splitIdx + roll.text.length);
                         }
-                    });
+                    }
 
                     if (remainingLine) {
                         segments.push(<span key="end">{remainingLine}</span>);
@@ -185,7 +185,7 @@ export function ItemViewer({
 
     return (
         <div
-            className={`poe-border relative mx-auto w-full rounded-xl bg-[#0a0a0a] ${rarity.glow} overflow-hidden transition-shadow duration-500`}
+            className={`poe-border bg-([#0a0a0a]) relative mx-auto w-full rounded-xl ${rarity.glow} overflow-hidden transition-shadow duration-500`}
         >
             <div className={`${rarity.gradient} rounded-t-[1px]`}>
                 <div className="px-4 py-3 text-center">
@@ -198,7 +198,7 @@ export function ItemViewer({
                         </h3>
                     )}
                 </div>
-                <div className={`h-px ${rarity.border} mx-2 bg-(--poe-border) opacity-30`} />
+                <div className={`h-px ${rarity.border} bg-(--poe-border) opacity-30`} />
             </div>
 
             <div className="space-y-3 text-[#a38d6d]">

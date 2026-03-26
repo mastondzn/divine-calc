@@ -41,14 +41,14 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
     }
 
     // Calculate current average percentile (for display purposes)
-    let currentTotalPercentile = 0;
-    selectedRolls.forEach((roll) => {
+    const currentTotalPercentile = selectedRolls.reduce((acc, roll) => {
         if (roll.max === roll.min) {
-            currentTotalPercentile += 1;
+            acc += 1;
         } else {
-            currentTotalPercentile += (roll.value - roll.min) / (roll.max - roll.min);
+            acc += (roll.value - roll.min) / (roll.max - roll.min);
         }
-    });
+        return acc;
+    }, 0);
     const currentAveragePercentile = currentTotalPercentile / selectedRolls.length;
 
     let numAllEqualOrBetter = 1;
@@ -87,11 +87,10 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
     }
 
     const numToImprove = Math.max(0, numAllEqualOrBetter - numAllExactlyEqual);
-    const numPerfect = 1;
 
     const chanceEqualOrBetter = (numAllEqualOrBetter / denominator) * 100;
     const chanceToImprove = (numToImprove / denominator) * 100;
-    const chancePerfect = (numPerfect / denominator) * 100;
+    const chancePerfect = (1 / denominator) * 100;
 
     return {
         currentAveragePercentile,
@@ -100,7 +99,7 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
         chancePerfect,
         fractionToImprove: { numerator: numToImprove, denominator },
         fractionEqualOrBetter: { numerator: numAllEqualOrBetter, denominator },
-        fractionPerfect: { numerator: numPerfect, denominator },
+        fractionPerfect: { numerator: 1, denominator },
         selectedRollsCount: selectedRolls.length,
     };
 }
