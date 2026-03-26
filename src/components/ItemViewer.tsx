@@ -198,7 +198,7 @@ export function ItemViewer({
 
     return (
         <div
-            className={`item-card poe-border-strong mx-auto w-full max-w-125 rounded-sm bg-[#0a0a0a] p-0.75 ${rarity.glow} transition-shadow duration-500`}
+            className={`item-card poe-border-strong mx-auto w-full rounded-sm bg-[#0a0a0a] ${rarity.glow} transition-shadow duration-500`}
         >
             <div className={`${rarity.gradient} rounded-t-[1px]`}>
                 <div className="px-4 py-3 text-center">

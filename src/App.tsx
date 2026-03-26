@@ -91,9 +91,9 @@ function App() {
                     </p>
                 </header>
 
-                <div className="grid flex-1 grid-cols-1 items-start gap-6 sm:gap-8 lg:grid-cols-12">
+                <div className="grid flex-1 grid-cols-1 items-start gap-6 sm:gap-8 lg:grid-cols-2">
                     <div
-                        className="animate-fade-in-up flex flex-col gap-6 lg:col-span-5"
+                        className="animate-fade-in-up flex flex-col gap-6 lg:col-span-1"
                         style={{ animationDelay: '0.1s' }}
                     >
                         <ItemPaster
@@ -104,16 +104,14 @@ function App() {
                     </div>
 
                     <div
-                        className="animate-fade-in-up flex justify-center lg:col-span-7"
+                        className="animate-fade-in-up flex w-full lg:col-span-1"
                         style={{ animationDelay: '0.2s' }}
                     >
-                        <div className="w-full max-w-125">
-                            <ItemViewer
-                                item={item}
-                                selectedRolls={selectedRollNames}
-                                onToggleRoll={handleToggleRoll}
-                            />
-                        </div>
+                        <ItemViewer
+                            item={item}
+                            selectedRolls={selectedRollNames}
+                            onToggleRoll={handleToggleRoll}
+                        />
                     </div>
                 </div>
 
