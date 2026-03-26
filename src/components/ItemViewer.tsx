@@ -188,7 +188,7 @@ export function ItemViewer({
 
     return (
         <div
-            className={`poe-border-strong relative mx-auto w-full rounded-sm bg-[#0a0a0a] ${rarity.glow} transition-shadow duration-500`}
+            className={`poe-border relative mx-auto w-full rounded-xl bg-[#0a0a0a] ${rarity.glow} overflow-hidden transition-shadow duration-500`}
         >
             <div className={`${rarity.gradient} rounded-t-[1px]`}>
                 <div className="px-4 py-3 text-center">
@@ -201,7 +201,7 @@ export function ItemViewer({
                         </h3>
                     )}
                 </div>
-                <div className={`h-0.5 ${rarity.border} mx-2 bg-current opacity-30`} />
+                <div className={`h-px ${rarity.border} mx-2 bg-(--poe-border) opacity-30`} />
             </div>
 
             <div className="space-y-3 p-4 text-[#a38d6d]">
@@ -235,7 +235,7 @@ export function ItemViewer({
                 )}
 
                 <PoeSeparator />
-                <div className="text-center font-sans text-[10px] tracking-wide text-zinc-600 italic">
+                <div className="pt-2 text-center font-sans text-[10px] tracking-wide text-zinc-600 italic">
                     Select ranges above to include them in the divine calculation.
                 </div>
             </div>
