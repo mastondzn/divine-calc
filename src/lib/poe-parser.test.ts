@@ -46,49 +46,49 @@ Skills fire an additional Projectile
 Warlord Item`;
 
 describe('poe-parser', () => {
-  it('correctly parses the Vaal Axe example', () => {
-    const item = parsePoeItemText(axeText);
-    expect(item).not.toBeNull();
-    if (!item) return;
+    it('correctly parses the Vaal Axe example', () => {
+        const item = parsePoeItemText(axeText);
+        expect(item).not.toBeNull();
+        if (!item) return;
 
-    expect(item.itemClass).toBe('Two Hand Axes');
-    expect(item.rarity).toBe('Rare');
-    expect(item.name).toBe('Vengeance Spawn');
-    expect(item.baseType).toBe('Vaal Axe');
+        expect(item.itemClass).toBe('Two Hand Axes');
+        expect(item.rarity).toBe('Rare');
+        expect(item.name).toBe('Vengeance Spawn');
+        expect(item.baseType).toBe('Vaal Axe');
 
-    // Expected modifiers:
-    // 1. Implicit
-    // 2. Prefix Flaring (2 stats)
-    // 3. Prefix Tyrannical
-    // 4. Prefix Dictator's (2 stats)
-    // 5. Suffix of Fame
-    // 6. Suffix of the Conquest (no ranges)
-    // 7. Master Crafted Suffix
-    expect(item.modifiers.length).toBe(7);
+        // Expected modifiers:
+        // 1. Implicit
+        // 2. Prefix Flaring (2 stats)
+        // 3. Prefix Tyrannical
+        // 4. Prefix Dictator's (2 stats)
+        // 5. Suffix of Fame
+        // 6. Suffix of the Conquest (no ranges)
+        // 7. Master Crafted Suffix
+        expect(item.modifiers.length).toBe(7);
 
-    const flaring = item.modifiers.find(m => m.name === 'Flaring');
-    expect(flaring).toBeDefined();
-    expect(flaring?.tier).toBe(1);
-    expect(flaring?.type).toBe('prefix');
-    expect(flaring?.rolls.length).toBe(2);
-    if (flaring && flaring.rolls.length === 2) {
-      expect(flaring.rolls[0].value).toBe(39);
-      expect(flaring.rolls[0].min).toBe(34);
-      expect(flaring.rolls[0].max).toBe(47);
-      
-      expect(flaring.rolls[1].value).toBe(75);
-      expect(flaring.rolls[1].min).toBe(72);
-      expect(flaring.rolls[1].max).toBe(84);
-    }
-    
-    // Check crafted modifier
-    const crafted = item.modifiers.find(m => m.name === 'of Craft');
-    expect(crafted).toBeDefined();
-    expect(crafted?.rolls.length).toBe(1);
-    expect(crafted?.rolls[0].value).toBe(35);
-  });
+        const flaring = item.modifiers.find((m) => m.name === 'Flaring');
+        expect(flaring).toBeDefined();
+        expect(flaring?.tier).toBe(1);
+        expect(flaring?.type).toBe('prefix');
+        expect(flaring?.rolls.length).toBe(2);
+        if (flaring && flaring.rolls.length === 2) {
+            expect(flaring.rolls[0].value).toBe(39);
+            expect(flaring.rolls[0].min).toBe(34);
+            expect(flaring.rolls[0].max).toBe(47);
 
-  const hhText = `Item Class: Belts
+            expect(flaring.rolls[1].value).toBe(75);
+            expect(flaring.rolls[1].min).toBe(72);
+            expect(flaring.rolls[1].max).toBe(84);
+        }
+
+        // Check crafted modifier
+        const crafted = item.modifiers.find((m) => m.name === 'of Craft');
+        expect(crafted).toBeDefined();
+        expect(crafted?.rolls.length).toBe(1);
+        expect(crafted?.rolls[0].value).toBe(35);
+    });
+
+    const hhText = `Item Class: Belts
 Rarity: Unique
 Headhunter
 Leather Belt
@@ -119,31 +119,31 @@ judges through flesh-born windows. The heart is meat.
 The head is where the Man is."
 - Lavianga, Advisor to Kaom`;
 
-  it('correctly parses Unique items like Headhunter', () => {
-    const item = parsePoeItemText(hhText);
-    expect(item).not.toBeNull();
-    if (!item) return;
+    it('correctly parses Unique items like Headhunter', () => {
+        const item = parsePoeItemText(hhText);
+        expect(item).not.toBeNull();
+        if (!item) return;
 
-    expect(item.rarity).toBe('Unique');
-    expect(item.name).toBe('Headhunter');
-    
-    const uniqueMods = item.modifiers.filter(m => m.type === 'unique');
-    expect(uniqueMods.length).toBe(5);
-    
-    const implicitMods = item.modifiers.filter(m => m.type === 'implicit');
-    expect(implicitMods.length).toBe(1);
-    expect(implicitMods[0].rolls[0].value).toBe(37);
-    
-    // Check first unique mod
-    expect(uniqueMods[0].rolls[0].value).toBe(26);
-    expect(uniqueMods[0].rolls[0].min).toBe(20);
-    expect(uniqueMods[0].rolls[0].max).toBe(30);
+        expect(item.rarity).toBe('Unique');
+        expect(item.name).toBe('Headhunter');
 
-    // Check unique mod with no rolls
-    expect(uniqueMods[1].rolls.length).toBe(0);
-  });
+        const uniqueMods = item.modifiers.filter((m) => m.type === 'unique');
+        expect(uniqueMods.length).toBe(5);
 
-  const ventorText = `Item Class: Rings
+        const implicitMods = item.modifiers.filter((m) => m.type === 'implicit');
+        expect(implicitMods.length).toBe(1);
+        expect(implicitMods[0].rolls[0].value).toBe(37);
+
+        // Check first unique mod
+        expect(uniqueMods[0].rolls[0].value).toBe(26);
+        expect(uniqueMods[0].rolls[0].min).toBe(20);
+        expect(uniqueMods[0].rolls[0].max).toBe(30);
+
+        // Check unique mod with no rolls
+        expect(uniqueMods[1].rolls.length).toBe(0);
+    });
+
+    const ventorText = `Item Class: Rings
 Rarity: Unique
 Ventor's Gamble
 Gold Ring
@@ -174,26 +174,25 @@ An anomaly defying all odds
 The "unkillable" beast met the divine
 And Ventor met his latest trophy.`;
 
-  it('correctly parses negative range items like Ventors Gamble', () => {
-    const item = parsePoeItemText(ventorText);
-    expect(item).not.toBeNull();
-    if (!item) return;
+    it('correctly parses negative range items like Ventors Gamble', () => {
+        const item = parsePoeItemText(ventorText);
+        expect(item).not.toBeNull();
+        if (!item) return;
 
-    expect(item.rarity).toBe('Unique');
-    expect(item.name).toBe("Ventor's Gamble");
-    
-    const uniqueMods = item.modifiers.filter(m => m.type === 'unique');
-    expect(uniqueMods.length).toBe(6);
-    
-    // Check fire res mod
-    expect(uniqueMods[1].rolls[0].value).toBe(42);
-    expect(uniqueMods[1].rolls[0].min).toBe(-25);
-    expect(uniqueMods[1].rolls[0].max).toBe(50);
+        expect(item.rarity).toBe('Unique');
+        expect(item.name).toBe("Ventor's Gamble");
 
-    // Check cold res mod
-    expect(uniqueMods[2].rolls[0].value).toBe(-20);
-    expect(uniqueMods[2].rolls[0].min).toBe(-25);
-    expect(uniqueMods[2].rolls[0].max).toBe(50);
-  });
+        const uniqueMods = item.modifiers.filter((m) => m.type === 'unique');
+        expect(uniqueMods.length).toBe(6);
+
+        // Check fire res mod
+        expect(uniqueMods[1].rolls[0].value).toBe(42);
+        expect(uniqueMods[1].rolls[0].min).toBe(-25);
+        expect(uniqueMods[1].rolls[0].max).toBe(50);
+
+        // Check cold res mod
+        expect(uniqueMods[2].rolls[0].value).toBe(-20);
+        expect(uniqueMods[2].rolls[0].min).toBe(-25);
+        expect(uniqueMods[2].rolls[0].max).toBe(50);
+    });
 });
-
