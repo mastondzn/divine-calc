@@ -72,8 +72,8 @@ function App() {
                     </div>
 
                     <p className="mx-auto max-w-lg text-sm leading-relaxed tracking-wide text-zinc-500 sm:text-base">
-                        Analyze your item's modifier rolls and calculate the probability of hitting
-                        a better outcome with a Divine Orb.
+                        Analyze your item's modifier rolls and calculate the probability of hitting a better outcome
+                        with a Divine Orb.
                     </p>
                 </header>
 
@@ -82,22 +82,12 @@ function App() {
                         className="animate-fade-in-up flex flex-col gap-6 lg:col-span-1"
                         style={{ animationDelay: '0.1s' }}
                     >
-                        <ItemPaster
-                            initialText={item?.rawText || ''}
-                            onParsedItem={handleParsedItem}
-                        />
+                        <ItemPaster initialText={item?.rawText || ''} onParsedItem={handleParsedItem} />
                         <DivineReport selectedRolls={selectedRollsData} />
                     </div>
 
-                    <div
-                        className="animate-fade-in-up flex w-full lg:col-span-1"
-                        style={{ animationDelay: '0.2s' }}
-                    >
-                        <ItemViewer
-                            item={item}
-                            selectedRolls={selectedRollNames}
-                            onToggleRoll={handleToggleRoll}
-                        />
+                    <div className="animate-fade-in-up flex w-full lg:col-span-1" style={{ animationDelay: '0.2s' }}>
+                        <ItemViewer item={item} selectedRolls={selectedRollNames} onToggleRoll={handleToggleRoll} />
                     </div>
                 </div>
 
@@ -116,8 +106,8 @@ function App() {
                             <span>mastondzn/divine-calc</span>
                         </a>
                         <p className="mx-auto max-w-lg text-xs tracking-wide text-zinc-600">
-                            Not affiliated with Grinding Gear Games. Path of Exile is a registered
-                            trademark of Grinding Gear Games.
+                            Not affiliated with Grinding Gear Games. Path of Exile is a registered trademark of Grinding
+                            Gear Games.
                         </p>
                     </div>
                 </footer>

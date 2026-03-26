@@ -70,9 +70,7 @@ export function parsePoeItemText(text: string): PoeItem | null {
         .map((l) => l.trim())
         .filter(
             (l) =>
-                l !== 'Searing Exarch Item' &&
-                l !== 'Eater of Worlds Item' &&
-                !(l.startsWith('(') && l.endsWith(')')),
+                l !== 'Searing Exarch Item' && l !== 'Eater of Worlds Item' && !(l.startsWith('(') && l.endsWith(')')),
         );
     if (lines.length < 5) return null;
 
@@ -151,8 +149,7 @@ export function parsePoeItemText(text: string): PoeItem | null {
         if (currentMod && !line.startsWith('--------') && !line.startsWith('{')) {
             currentMod.lines.push(line);
             // Look for ranges: e.g. 39(34-47) or 159(155-169) or -20(-25-50)
-            const rangeRegex =
-                /([+-]?\d+(?:\.\d+)?)\s*\(\s*([+-]?\d+(?:\.\d+)?)\s*-\s*([+-]?\d+(?:\.\d+)?)\s*\)/g;
+            const rangeRegex = /([+-]?\d+(?:\.\d+)?)\s*\(\s*([+-]?\d+(?:\.\d+)?)\s*-\s*([+-]?\d+(?:\.\d+)?)\s*\)/g;
             let match;
             while ((match = rangeRegex.exec(line)) !== null) {
                 const val = parseFloat(match[1]);

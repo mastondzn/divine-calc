@@ -1,7 +1,7 @@
 /** @satisfies {import('prettier').Config} */
 const config = {
     plugins: ['prettier-plugin-tailwindcss'],
-    printWidth: 100,
+    printWidth: 120,
     tabWidth: 4,
     singleQuote: true,
 };

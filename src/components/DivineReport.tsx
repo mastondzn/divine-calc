@@ -6,8 +6,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
         return (
             <div className="poe-glass poe-border flex h-full max-h-75 flex-col items-center justify-center gap-2 rounded-xl p-6 text-sm text-zinc-600">
                 <p className="max-w-55 text-center text-xs leading-relaxed">
-                    Select at least one modifier range in the item viewer to see divine
-                    calculations.
+                    Select at least one modifier range in the item viewer to see divine calculations.
                 </p>
             </div>
         );
@@ -65,9 +64,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
     const renderFraction = (fraction: Fraction) => {
         const { numerator, denominator } = fraction;
         const oneIn =
-            numerator > 0
-                ? (denominator / numerator).toLocaleString(undefined, { maximumFractionDigits: 1 })
-                : '∞';
+            numerator > 0 ? (denominator / numerator).toLocaleString(undefined, { maximumFractionDigits: 1 }) : '∞';
 
         return (
             <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium tabular-nums">
@@ -103,9 +100,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             </p>
                         </div>
                         <div className="flex items-baseline">
-                            <span className="text-3xl font-black text-zinc-100 tabular-nums">
-                                {avgPercentile}
-                            </span>
+                            <span className="text-3xl font-black text-zinc-100 tabular-nums">{avgPercentile}</span>
                             <span className="ml-0.5 text-xs font-medium text-zinc-500">%</span>
                         </div>
                     </div>
@@ -113,9 +108,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                     {/* Off Perfect */}
                     <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
-                            <p className="text-xs font-semibold tracking-wider text-zinc-400 uppercase">
-                                Off-Perfect
-                            </p>
+                            <p className="text-xs font-semibold tracking-wider text-zinc-400 uppercase">Off-Perfect</p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Numerical distance from perfect rolls
                             </p>
@@ -130,9 +123,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                     {/* Equal or Better */}
                     <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
-                            <p
-                                className={`text-xs font-semibold tracking-wider uppercase ${chanceEqualStyle.text}`}
-                            >
+                            <p className={`text-xs font-semibold tracking-wider uppercase ${chanceEqualStyle.text}`}>
                                 Equal or Better
                             </p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
@@ -146,59 +137,41 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             >
                                 {chanceEqual}
                             </span>
-                            <span className={`ml-0.5 text-xs font-bold ${chanceEqualStyle.text}`}>
-                                %
-                            </span>
+                            <span className={`ml-0.5 text-xs font-bold ${chanceEqualStyle.text}`}>%</span>
                         </div>
                     </div>
 
                     {/* Strictly Better */}
                     <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
-                            <p
-                                className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}
-                            >
-                                Better
-                            </p>
+                            <p className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}>Better</p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to improve at least one of the rolls
                             </p>
                             {renderFraction(result.fractionToImprove)}
                         </div>
                         <div className="flex items-baseline">
-                            <span
-                                className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text} `}
-                            >
+                            <span className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text} `}>
                                 {chance}
                             </span>
-                            <span className={`ml-0.5 text-xs font-bold ${chanceStyle.text}`}>
-                                %
-                            </span>
+                            <span className={`ml-0.5 text-xs font-bold ${chanceStyle.text}`}>%</span>
                         </div>
                     </div>
 
                     {/* Perfect */}
                     <div className="flex items-center justify-between py-3">
                         <div>
-                            <p
-                                className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}
-                            >
-                                Perfect
-                            </p>
+                            <p className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}>Perfect</p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to hit perfect rolls
                             </p>
                             {renderFraction(result.fractionPerfect)}
                         </div>
                         <div className="flex items-baseline">
-                            <span
-                                className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text}`}
-                            >
+                            <span className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text}`}>
                                 {chancePerfect}
                             </span>
-                            <span className={`ml-0.5 text-xs font-bold ${chanceStyle.text}`}>
-                                %
-                            </span>
+                            <span className={`ml-0.5 text-xs font-bold ${chanceStyle.text}`}>%</span>
                         </div>
                     </div>
                 </div>
