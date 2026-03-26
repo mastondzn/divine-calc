@@ -15,7 +15,12 @@ export function ItemViewer({
 }) {
     if (!item) {
         return (
-            <div className="poe-border relative flex h-125 w-full flex-col items-center justify-center gap-3 rounded-lg bg-[rgba(12,12,12,0.5)] text-zinc-600">
+            <div
+                className="
+                  relative flex h-125 w-full flex-col items-center justify-center gap-3 rounded-lg
+                  bg-[rgba(12,12,12,0.5)] text-zinc-600 poe-border
+                "
+            >
                 <span className="font-cinzel text-sm tracking-wide italic">Awaiting item data…</span>
             </div>
         );
@@ -25,43 +30,39 @@ export function ItemViewer({
         const l = r.toLowerCase();
         if (l.includes('unique'))
             return {
-                text: 'text-[#af6025]',
-                gradient: 'bg-gradient-to-b from-[#af6025]/20 via-[#af6025]/5 to-transparent',
-                border: 'border-[#af6025]/60',
-                glow: 'shadow-[0_0_30px_rgba(175,96,37,0.1)]',
+                text: 'text-orange-600',
+                gradient: 'bg-gradient-to-b from-orange-600/20 via-orange-600/5 to-transparent',
+                border: 'border-orange-600/60',
             };
         if (l.includes('rare'))
             return {
-                text: 'text-[#ffd700]',
-                gradient: 'bg-gradient-to-b from-[#ffd700]/15 via-[#ffd700]/3 to-transparent',
-                border: 'border-[#ffd700]/50',
-                glow: 'shadow-[0_0_30px_rgba(255,215,0,0.06)]',
+                text: 'text-yellow-400',
+                gradient: 'bg-gradient-to-b from-yellow-400/15 via-yellow-400/3 to-transparent',
+                border: 'border-yellow-400/50',
             };
         if (l.includes('magic'))
             return {
-                text: 'text-[#8888ff]',
-                gradient: 'bg-gradient-to-b from-[#8888ff]/15 via-[#8888ff]/3 to-transparent',
-                border: 'border-[#8888ff]/50',
-                glow: 'shadow-[0_0_30px_rgba(136,136,255,0.08)]',
+                text: 'text-blue-400',
+                gradient: 'bg-gradient-to-b from-blue-400/15 via-blue-400/3 to-transparent',
+                border: 'border-blue-400/50',
             };
         return {
             text: 'text-zinc-200',
             gradient: 'bg-gradient-to-b from-zinc-700/15 via-zinc-700/3 to-transparent',
             border: 'border-zinc-600/50',
-            glow: '',
         };
     };
 
     const renderModifier = (mod: PoeModifier) => {
-        let textColor = 'text-[#8888FF]';
-        if (mod.isCrafted) textColor = 'text-[#b8daf2]';
-        if (mod.isFractured) textColor = 'text-[#A38D6D]';
+        let textColor = 'text-blue-400';
+        if (mod.isCrafted) textColor = 'text-blue-200';
+        if (mod.isFractured) textColor = 'text-olive-400';
 
         const getPercentileColor = (pct: number) => {
-            if (pct < 30) return { text: 'text-red-400/80', bg: 'bg-red-500/10', bar: '#ef4444' };
-            if (pct < 70) return { text: 'text-orange-400/80', bg: 'bg-orange-500/10', bar: '#f97316' };
-            if (pct < 95) return { text: 'text-green-400/80', bg: 'bg-green-500/10', bar: '#22c55e' };
-            return { text: 'text-cyan-300/90', bg: 'bg-cyan-500/10', bar: '#06b6d4' };
+            if (pct < 30) return { text: 'text-red-400/80', bg: 'bg-red-500/10', bar: 'bg-red-700' };
+            if (pct < 70) return { text: 'text-orange-400/80', bg: 'bg-orange-500/10', bar: 'bg-orange-700' };
+            if (pct < 95) return { text: 'text-green-400/80', bg: 'bg-green-500/10', bar: 'bg-green-700' };
+            return { text: 'text-cyan-300/90', bg: 'bg-cyan-500/10', bar: 'bg-cyan-700' };
         };
 
         return (
@@ -116,13 +117,22 @@ export function ItemViewer({
                                     )}
                                     <label
                                         htmlFor={isDisabled ? undefined : roll.id}
-                                        className={`inline-flex flex-col justify-center overflow-hidden rounded-md border pt-1 transition-all duration-200 ${isFixed ? 'pb-1' : ''} ${
-                                            isDisabled
-                                                ? 'cursor-not-allowed border-zinc-800/50 bg-zinc-900/50 opacity-50'
-                                                : isSelected
-                                                  ? 'animate-border-shimmer cursor-pointer border-amber-500/40 bg-amber-500/10 text-amber-200'
-                                                  : 'cursor-pointer border-zinc-800 bg-zinc-900/60 hover:border-zinc-600 hover:bg-zinc-800/40'
-                                        }`}
+                                        className={`
+                                          inline-flex flex-col justify-center overflow-hidden rounded-md border pt-1
+                                          transition-all duration-200
+                                          ${isFixed ? 'pb-1' : ''} ${
+                                              isDisabled
+                                                  ? 'cursor-not-allowed border-zinc-800/50 bg-zinc-900/50 opacity-50'
+                                                  : isSelected
+                                                    ? `
+                                                      animate-border-shimmer cursor-pointer border-amber-500/40
+                                                      bg-amber-500/10 text-amber-200
+                                                    `
+                                                    : `
+                                                      cursor-pointer border-zinc-800 bg-zinc-900/60
+                                                      hover:border-zinc-600 hover:bg-zinc-800/40
+                                                    `
+                                          }`}
                                         title={
                                             isFractured
                                                 ? 'Fractured modifiers cannot be divined.'
@@ -140,7 +150,7 @@ export function ItemViewer({
                                             </span>
                                             {!isFixed && (
                                                 <span
-                                                    className={`py ml-1.5 rounded-sm px-1 text-[9px] font-semibold ${pctStyle.text} ${pctStyle.bg} `}
+                                                    className={`ml-1.5 rounded-sm px-1 text-[9px] font-semibold ${pctStyle.text} ${pctStyle.bg}`}
                                                 >
                                                     {percentile}%
                                                 </span>
@@ -149,10 +159,9 @@ export function ItemViewer({
                                         {!isFixed && (
                                             <div className="h-1 w-full overflow-hidden bg-white/10">
                                                 <div
-                                                    className="h-full"
+                                                    className={`h-full ${pctStyle.bar}`}
                                                     style={{
                                                         width: `${percentile}%`,
-                                                        backgroundColor: pctStyle.bar,
                                                         opacity: isSelected ? 0.8 : 0.4,
                                                         transition: 'width 0.4s ease-out',
                                                     }}
@@ -184,9 +193,7 @@ export function ItemViewer({
     const rarity = getRarityScheme(item.rarity);
 
     return (
-        <div
-            className={`poe-border bg-([#0a0a0a]) relative mx-auto w-full rounded-xl ${rarity.glow} overflow-hidden transition-shadow duration-500`}
-        >
+        <div className={`relative mx-auto w-full overflow-hidden rounded-xl transition-shadow duration-500 poe-border`}>
             <div className={`${rarity.gradient} rounded-t-[1px]`}>
                 <div className="px-4 py-3 text-center">
                     <h2 className={`font-cinzel text-xl font-bold ${rarity.text} tracking-wider drop-shadow-md`}>
@@ -201,7 +208,7 @@ export function ItemViewer({
                 <div className={`h-px ${rarity.border} bg-(--poe-border) opacity-30`} />
             </div>
 
-            <div className="space-y-3 text-[#a38d6d]">
+            <div className="space-y-3">
                 {item.modifiers.filter((m) => m.type === 'implicit' || m.type === 'enchant').length > 0 && (
                     <>
                         <div>

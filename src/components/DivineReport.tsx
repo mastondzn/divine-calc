@@ -4,8 +4,13 @@ import { calculateDivineStats, type Fraction } from '../lib/divine-calculator';
 export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll[] }) {
     if (selectedRolls.length === 0) {
         return (
-            <div className="poe-glass poe-border flex h-full max-h-75 flex-col items-center justify-center gap-2 rounded-xl p-6 text-sm text-zinc-600">
-                <p className="max-w-55 text-center text-xs leading-relaxed">
+            <div
+                className="
+                  flex h-full max-h-75 flex-col items-center justify-center gap-2 rounded-xl p-6 text-sm text-zinc-600
+                  poe-glass poe-border
+                "
+            >
+                <p className="max-w-55 text-center text-xs/relaxed">
                     Select at least one modifier range in the item viewer to see divine calculations.
                 </p>
             </div>
@@ -33,27 +38,23 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                 text: 'text-red-400',
                 bg: 'bg-red-500/10',
                 border: 'border-red-500/20',
-                bar: '#ef4444',
             };
         if (val < 35)
             return {
                 text: 'text-orange-400',
                 bg: 'bg-orange-500/10',
                 border: 'border-orange-500/20',
-                bar: '#f97316',
             };
         if (val < 50)
             return {
                 text: 'text-amber-400',
                 bg: 'bg-amber-500/10',
                 border: 'border-amber-500/20',
-                bar: '#f59e0b',
             };
         return {
             text: 'text-emerald-400',
             bg: 'bg-emerald-500/10',
             border: 'border-emerald-500/20',
-            bar: '#10b981',
         };
     };
 
@@ -67,11 +68,11 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
 
         return (
             <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium tabular-nums">
-                <span className="rounded border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
+                <span className="rounded-sm border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
                     {numerator}/{denominator}
                 </span>
                 <span className="text-zinc-600">≈</span>
-                <span className="rounded border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
+                <span className="rounded-sm border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
                     1 in {oneIn}d
                 </span>
             </div>
@@ -79,9 +80,14 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
     };
 
     return (
-        <div className="animate-fade-in-up poe-glass poe-border poe-glow-strong relative overflow-hidden rounded-xl">
+        <div className="relative animate-fade-in-up overflow-hidden rounded-xl poe-glow-strong poe-glass poe-border">
             <div className="p-5">
-                <h3 className="font-cinzel mb-5 flex items-center justify-center gap-3 text-center text-sm font-bold tracking-[0.2em] text-(--accent-gold) uppercase">
+                <h3
+                    className="
+                      mb-5 flex items-center justify-center gap-3 text-center font-cinzel text-sm font-bold
+                      tracking-[0.2em] text-(--accent-gold) uppercase
+                    "
+                >
                     <span className="block h-px w-10 bg-linear-to-r from-transparent to-(--poe-border-dim)" />
                     Analysis
                     <span className="block h-px w-10 bg-linear-to-l from-transparent to-(--poe-border-dim)" />
@@ -150,7 +156,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             {renderFraction(result.fractionToImprove)}
                         </div>
                         <div className="flex items-baseline">
-                            <span className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text} `}>
+                            <span className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text}`}>
                                 {chance}
                             </span>
                             <span className={`ml-0.5 text-xs font-bold ${chanceStyle.text}`}>%</span>
