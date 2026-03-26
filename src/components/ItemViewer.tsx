@@ -133,7 +133,7 @@ export function ItemViewer({
                                                     : `Current Roll: ${percentile}%`
                                         }
                                     >
-                                        <div className="flex w-full items-center justify-center px-2 pb-0.5">
+                                        <div className="flex w-full items-center justify-center px-2">
                                             <span className="text-sm font-bold">{roll.value}</span>
                                             <span className="ml-1 font-mono text-[11px] tracking-tighter text-zinc-500">
                                                 ({roll.min}–{roll.max})
@@ -147,7 +147,7 @@ export function ItemViewer({
                                             )}
                                         </div>
                                         {!isFixed && (
-                                            <div className="h-0.5 w-full overflow-hidden bg-white/10">
+                                            <div className="h-1 w-full overflow-hidden bg-white/10">
                                                 <div
                                                     className="h-full"
                                                     style={{
