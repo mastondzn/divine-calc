@@ -119,7 +119,7 @@ export function ItemViewer({
                                     )}
                                     <label
                                         htmlFor={isDisabled ? undefined : roll.id}
-                                        className={`inline-flex flex-col justify-center rounded-md border px-2 pt-1 transition-all duration-200 ${isFixed ? 'pb-1' : ''} ${
+                                        className={`inline-flex flex-col justify-center overflow-hidden rounded-md border pt-1 transition-all duration-200 ${isFixed ? 'pb-1' : ''} ${
                                             isDisabled
                                                 ? 'cursor-not-allowed border-zinc-800/50 bg-zinc-900/50 opacity-50'
                                                 : isSelected
@@ -136,7 +136,7 @@ export function ItemViewer({
                                                     : `Current Roll: ${percentile}%`
                                         }
                                     >
-                                        <div className="flex w-full items-center justify-center">
+                                        <div className="flex w-full items-center justify-center px-2 pb-0.5">
                                             <span className="text-sm font-bold">{roll.value}</span>
                                             <span className="ml-1 font-mono text-[11px] tracking-tighter text-zinc-500">
                                                 ({roll.min}–{roll.max})
@@ -150,7 +150,7 @@ export function ItemViewer({
                                             )}
                                         </div>
                                         {!isFixed && (
-                                            <div className="bg-c h-0.5 w-full overflow-hidden bg-white/10">
+                                            <div className="h-0.5 w-full overflow-hidden bg-white/10">
                                                 <div
                                                     className="h-full"
                                                     style={{
