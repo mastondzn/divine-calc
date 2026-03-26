@@ -70,8 +70,8 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                 : '∞';
 
         return (
-            <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium">
-                <span className="rounded border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 font-mono text-zinc-300">
+            <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium tabular-nums">
+                <span className="rounded border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
                     {numerator}/{denominator}
                 </span>
                 <span className="text-zinc-600">≈</span>
@@ -103,7 +103,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             </p>
                         </div>
                         <div className="flex items-baseline">
-                            <span className="text-3xl font-black text-zinc-100">
+                            <span className="text-3xl font-black text-zinc-100 tabular-nums">
                                 {avgPercentile}
                             </span>
                             <span className="ml-0.5 text-xs font-medium text-zinc-500">%</span>
@@ -121,7 +121,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             </p>
                         </div>
                         <div className="flex items-baseline">
-                            <span className="text-3xl font-black text-zinc-100">
+                            <span className="text-3xl font-black text-zinc-100 tabular-nums">
                                 {offPerfectFormatted}
                             </span>
                         </div>
@@ -142,7 +142,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                         </div>
                         <div className="flex items-baseline">
                             <span
-                                className={`text-3xl font-black tracking-tight ${chanceEqualStyle.text}`}
+                                className={`text-3xl font-black tracking-tight tabular-nums ${chanceEqualStyle.text}`}
                             >
                                 {chanceEqual}
                             </span>
@@ -167,7 +167,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                         </div>
                         <div className="flex items-baseline">
                             <span
-                                className={`text-3xl font-black tracking-tight ${chanceStyle.text}`}
+                                className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text} `}
                             >
                                 {chance}
                             </span>
@@ -192,7 +192,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                         </div>
                         <div className="flex items-baseline">
                             <span
-                                className={`text-3xl font-black tracking-tight ${chanceStyle.text}`}
+                                className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text}`}
                             >
                                 {chancePerfect}
                             </span>
