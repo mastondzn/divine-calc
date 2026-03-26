@@ -1,5 +1,5 @@
 import type { PoeModifierRoll } from '../lib/poe-parser';
-import { calculateDivineStats } from '../lib/divine-calculator';
+import { calculateDivineStats, type Fraction } from '../lib/divine-calculator';
 
 export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll[] }) {
     if (selectedRolls.length === 0) {
@@ -14,10 +14,11 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
     }
 
     const result = calculateDivineStats(selectedRolls);
+    console.log(result);
     const avgPercentile = Math.round(result.currentAveragePercentile * 100);
     const chance = result.chanceToImprove.toFixed(2);
     const chanceEqual = result.chanceEqualOrBetter.toFixed(2);
-    const chancePerfect = result.chancePerfect.toFixed(5);
+    const chancePerfect = result.chancePerfect.toFixed(2);
 
     let offPerfect = 0;
     selectedRolls.forEach((roll) => {
@@ -60,6 +61,26 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
 
     const chanceStyle = formatChanceColor(result.chanceToImprove);
     const chanceEqualStyle = formatChanceColor(result.chanceEqualOrBetter);
+
+    const renderFraction = (fraction: Fraction) => {
+        const { numerator, denominator } = fraction;
+        const oneIn =
+            numerator > 0
+                ? (denominator / numerator).toLocaleString(undefined, { maximumFractionDigits: 1 })
+                : '∞';
+
+        return (
+            <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium">
+                <span className="rounded border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 font-mono text-zinc-300">
+                    {numerator}/{denominator}
+                </span>
+                <span className="text-zinc-600">≈</span>
+                <span className="rounded border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
+                    1 in {oneIn}d
+                </span>
+            </div>
+        );
+    };
 
     return (
         <div className="animate-fade-in-up poe-glass poe-border poe-glow-strong relative overflow-hidden rounded-xl">
@@ -117,6 +138,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to hit the same or better rolls
                             </p>
+                            {renderFraction(result.fractionEqualOrBetter)}
                         </div>
                         <div className="flex items-baseline">
                             <span
@@ -136,11 +158,12 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             <p
                                 className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}
                             >
-                                Strictly Better
+                                Better
                             </p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to improve at least one of the rolls
                             </p>
+                            {renderFraction(result.fractionToImprove)}
                         </div>
                         <div className="flex items-baseline">
                             <span
@@ -165,6 +188,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to hit perfect rolls
                             </p>
+                            {renderFraction(result.fractionPerfect)}
                         </div>
                         <div className="flex items-baseline">
                             <span

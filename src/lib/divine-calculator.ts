@@ -1,10 +1,18 @@
 import type { PoeModifierRoll } from './poe-parser';
 
+export interface Fraction {
+    numerator: number;
+    denominator: number;
+}
+
 export interface DivineCalculationResult {
     currentAveragePercentile: number;
     chanceToImprove: number;
     chanceEqualOrBetter: number;
     chancePerfect: number;
+    fractionToImprove: Fraction;
+    fractionEqualOrBetter: Fraction;
+    fractionPerfect: Fraction;
     selectedRollsCount: number;
 }
 
@@ -12,7 +20,8 @@ export interface DivineCalculationResult {
  * Calculate divine orb probabilities using exact per-roll math.
  *
  * "Equal or Better" = every selected roll is >= its current value.
- * "Strictly Better"  = every roll is >= current AND at least one is strictly >.
+ * "Better" = every selected roll is >= its current value AND at least one is strictly >.
+ * "Perfect" = every roll is exactly its max value.
  *
  * Since divine orb rolls are independent, we can multiply per-roll probabilities
  * directly — no simulation or enumeration needed.
@@ -24,6 +33,9 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
             chanceToImprove: 0,
             chanceEqualOrBetter: 0,
             chancePerfect: 0,
+            fractionToImprove: { numerator: 0, denominator: 1 },
+            fractionEqualOrBetter: { numerator: 0, denominator: 1 },
+            fractionPerfect: { numerator: 0, denominator: 1 },
             selectedRollsCount: 0,
         };
     }
@@ -39,28 +51,18 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
     });
     const currentAveragePercentile = currentTotalPercentile / selectedRolls.length;
 
-    const variableRolls = selectedRolls.filter((r) => r.max > r.min);
+    let numAllEqualOrBetter = 1;
+    let numAllExactlyEqual = 1;
+    let denominator = 1;
 
-    if (variableRolls.length === 0) {
-        // All rolls are fixed — you always hit the same outcome
-        return {
-            currentAveragePercentile,
-            chanceToImprove: 0,
-            chanceEqualOrBetter: 100,
-            chancePerfect: 100,
-            selectedRollsCount: selectedRolls.length,
-        };
-    }
+    for (const roll of selectedRolls) {
+        if (roll.max === roll.min) {
+            numAllEqualOrBetter *= 1;
+            numAllExactlyEqual *= 1;
+            denominator *= 1;
+            continue;
+        }
 
-    // For each variable roll, compute:
-    //   P(new >= current) and P(new == current)
-    // Then:
-    //   P(equal or better) = product of P(new >= current) for all rolls
-    //   P(strictly better) = P(equal or better) - product of P(new == current) for all rolls
-    let probAllEqualOrBetter = 1;
-    let probAllExactlyEqual = 1;
-
-    for (const roll of variableRolls) {
         const isDecimal = roll.min % 1 !== 0 || roll.max % 1 !== 0 || roll.value % 1 !== 0;
         let step = 1;
         if (isDecimal) {
@@ -79,23 +81,26 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
         const totalValues = maxInt - minInt + 1;
         const valuesGteqCurrent = maxInt - currentInt + 1; // values >= current
 
-        probAllEqualOrBetter *= valuesGteqCurrent / totalValues;
-        probAllExactlyEqual *= 1 / totalValues;
+        numAllEqualOrBetter *= valuesGteqCurrent;
+        numAllExactlyEqual *= 1;
+        denominator *= totalValues;
     }
 
-    const chancePerfect = selectedRolls.reduce((acc, roll) => {
-        if (roll.max === roll.min) {
-            return acc * 1;
-        } else {
-            return (acc * 1) / (roll.max - roll.min + 1);
-        }
-    }, 1);
+    const numToImprove = Math.max(0, numAllEqualOrBetter - numAllExactlyEqual);
+    const numPerfect = 1;
+
+    const chanceEqualOrBetter = (numAllEqualOrBetter / denominator) * 100;
+    const chanceToImprove = (numToImprove / denominator) * 100;
+    const chancePerfect = (numPerfect / denominator) * 100;
 
     return {
         currentAveragePercentile,
-        chanceToImprove: Math.max(0, (probAllEqualOrBetter - probAllExactlyEqual) * 100),
-        chanceEqualOrBetter: probAllEqualOrBetter * 100,
-        chancePerfect: chancePerfect * 100,
+        chanceToImprove,
+        chanceEqualOrBetter,
+        chancePerfect,
+        fractionToImprove: { numerator: numToImprove, denominator },
+        fractionEqualOrBetter: { numerator: numAllEqualOrBetter, denominator },
+        fractionPerfect: { numerator: numPerfect, denominator },
         selectedRollsCount: selectedRolls.length,
     };
 }
