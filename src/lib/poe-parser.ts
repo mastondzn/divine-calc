@@ -116,8 +116,17 @@ export function parsePoeItemText(text: string): PoeItem | null {
             let match;
             while ((match = rangeRegex.exec(line)) !== null) {
                 const val = parseFloat(match[1]);
-                const min = parseFloat(match[2]);
-                const max = parseFloat(match[3]);
+                let min = parseFloat(match[2]);
+                let max = parseFloat(match[3]);
+
+                // flip min/max if min > max
+                // items such as progenesis have modifiers like this which break the calculation
+                // 17(20-10)% reduced Charges per use
+
+                if (min > max) {
+                    [min, max] = [max, min];
+                }
+
                 currentMod.rolls.push({
                     id: `roll-${Math.random().toString(36).substr(2, 9)}`,
                     text: match[0],
