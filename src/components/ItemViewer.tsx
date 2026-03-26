@@ -65,7 +65,7 @@ export function ItemViewer({
         };
 
         return (
-            <div key={mod.id} className="group relative my-3 text-center first:mt-0">
+            <div key={mod.id} className="group relative my-3 text-center">
                 <div className="mb-0.5 text-[10px] tracking-wider text-zinc-600 uppercase">
                     {mod.isFractured ? 'Fractured ' : mod.isCrafted ? 'Crafted ' : ''}
                     {mod.type.charAt(0).toUpperCase() + mod.type.slice(1)} Modifier
@@ -104,10 +104,7 @@ export function ItemViewer({
                             const pctStyle = getPercentileColor(percentile);
 
                             segments.push(
-                                <span
-                                    key={roll.id}
-                                    className="mx-1 my-1 inline-flex flex-col items-center align-middle"
-                                >
+                                <span key={roll.id} className="mx-1 inline-flex flex-col items-center align-middle">
                                     {!isDisabled && (
                                         <input
                                             type="checkbox"
@@ -204,7 +201,7 @@ export function ItemViewer({
                 <div className={`h-px ${rarity.border} mx-2 bg-(--poe-border) opacity-30`} />
             </div>
 
-            <div className="space-y-3 p-4 text-[#a38d6d]">
+            <div className="space-y-3 text-[#a38d6d]">
                 {item.modifiers.filter((m) => m.type === 'implicit' || m.type === 'enchant').length > 0 && (
                     <>
                         <div>
@@ -235,7 +232,7 @@ export function ItemViewer({
                 )}
 
                 <PoeSeparator />
-                <div className="pt-2 text-center font-sans text-[10px] tracking-wide text-zinc-600 italic">
+                <div className="my-3 text-center font-sans text-[12px] tracking-wide text-zinc-600 italic">
                     Select ranges above to include them in the divine calculation.
                 </div>
             </div>
