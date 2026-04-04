@@ -1,9 +1,10 @@
+import { IconBrandGithub } from '@tabler/icons-react';
 import { useState, useMemo, useEffect } from 'react';
+
+import type { PoeItem, PoeModifierRoll } from './lib/poe-parser';
+import { DivineReport } from './components/DivineReport';
 import { ItemPaster } from './components/ItemPaster';
 import { ItemViewer } from './components/ItemViewer';
-import { DivineReport } from './components/DivineReport';
-import type { PoeItem, PoeModifierRoll } from './lib/poe-parser';
-import { IconBrandGithub } from '@tabler/icons-react';
 
 function App() {
     const [item, setItem] = useState<PoeItem | null>(() => {
@@ -92,7 +93,7 @@ function App() {
                         className="flex animate-fade-in-up flex-col gap-6 lg:col-span-1"
                         style={{ animationDelay: '0.1s' }}
                     >
-                        <ItemPaster initialText={item?.rawText || ''} onParsedItem={handleParsedItem} />
+                        <ItemPaster initialText={item?.rawText ?? ''} onParsedItem={handleParsedItem} />
                         <DivineReport selectedRolls={selectedRollsData} />
                     </div>
 

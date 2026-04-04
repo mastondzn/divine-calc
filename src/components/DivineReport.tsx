@@ -1,6 +1,50 @@
 import type { PoeModifierRoll } from '../lib/poe-parser';
 import { calculateDivineStats, type Fraction } from '../lib/divine-calculator';
 
+function FractionBox({ fraction }: { fraction: Fraction }) {
+    const { numerator, denominator } = fraction;
+    const oneIn =
+        numerator > 0 ? (denominator / numerator).toLocaleString(undefined, { maximumFractionDigits: 1 }) : '∞';
+
+    return (
+        <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium tabular-nums">
+            <span className="rounded-sm border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
+                {numerator}/{denominator}
+            </span>
+            <span className="text-zinc-600">≈</span>
+            <span className="rounded-sm border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
+                1 in {oneIn}d
+            </span>
+        </div>
+    );
+}
+
+function formatChanceColor(val: number) {
+    if (val < 15)
+        return {
+            text: 'text-red-400',
+            bg: 'bg-red-500/10',
+            border: 'border-red-500/20',
+        };
+    if (val < 35)
+        return {
+            text: 'text-orange-400',
+            bg: 'bg-orange-500/10',
+            border: 'border-orange-500/20',
+        };
+    if (val < 50)
+        return {
+            text: 'text-amber-400',
+            bg: 'bg-amber-500/10',
+            border: 'border-amber-500/20',
+        };
+    return {
+        text: 'text-emerald-400',
+        bg: 'bg-emerald-500/10',
+        border: 'border-emerald-500/20',
+    };
+}
+
 export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll[] }) {
     if (selectedRolls.length === 0) {
         return (
@@ -11,7 +55,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                 "
             >
                 <p className="max-w-55 text-center text-xs/relaxed">
-                    Select at least one modifier range in the item viewer to see divine calculations.
+                    Select at least one relevant modifier range in the item viewer to see divine calculations.
                 </p>
             </div>
         );
@@ -30,54 +74,10 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
         return acc;
     }, 0);
 
-    const offPerfectFormatted = parseFloat(offPerfect.toFixed(2));
-
-    const formatChanceColor = (val: number) => {
-        if (val < 15)
-            return {
-                text: 'text-red-400',
-                bg: 'bg-red-500/10',
-                border: 'border-red-500/20',
-            };
-        if (val < 35)
-            return {
-                text: 'text-orange-400',
-                bg: 'bg-orange-500/10',
-                border: 'border-orange-500/20',
-            };
-        if (val < 50)
-            return {
-                text: 'text-amber-400',
-                bg: 'bg-amber-500/10',
-                border: 'border-amber-500/20',
-            };
-        return {
-            text: 'text-emerald-400',
-            bg: 'bg-emerald-500/10',
-            border: 'border-emerald-500/20',
-        };
-    };
+    const offPerfectFormatted = Number.parseFloat(offPerfect.toFixed(2));
 
     const chanceStyle = formatChanceColor(result.chanceToImprove);
     const chanceEqualStyle = formatChanceColor(result.chanceEqualOrBetter);
-
-    const renderFraction = (fraction: Fraction) => {
-        const { numerator, denominator } = fraction;
-        const oneIn =
-            numerator > 0 ? (denominator / numerator).toLocaleString(undefined, { maximumFractionDigits: 1 }) : '∞';
-
-        return (
-            <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium tabular-nums">
-                <span className="rounded-sm border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
-                    {numerator}/{denominator}
-                </span>
-                <span className="text-zinc-600">≈</span>
-                <span className="rounded-sm border border-zinc-700/50 bg-zinc-800/60 px-1.5 py-0.5 text-zinc-300">
-                    1 in {oneIn}d
-                </span>
-            </div>
-        );
-    };
 
     return (
         <div className="relative animate-fade-in-up overflow-hidden rounded-xl poe-glow-strong poe-glass poe-border">
@@ -94,7 +94,6 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                 </h3>
 
                 <div className="mx-auto flex w-full max-w-sm flex-col">
-                    {/* Current Quality */}
                     <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
                             <p className="text-xs font-semibold tracking-wider text-zinc-400 uppercase">
@@ -110,7 +109,6 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                         </div>
                     </div>
 
-                    {/* Off Perfect */}
                     <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
                             <p className="text-xs font-semibold tracking-wider text-zinc-400 uppercase">Off-Perfect</p>
@@ -125,7 +123,6 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                         </div>
                     </div>
 
-                    {/* Equal or Better */}
                     <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
                             <p className={`text-xs font-semibold tracking-wider uppercase ${chanceEqualStyle.text}`}>
@@ -134,7 +131,7 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to hit the same or better rolls
                             </p>
-                            {renderFraction(result.fractionEqualOrBetter)}
+                            <FractionBox fraction={result.fractionEqualOrBetter} />
                         </div>
                         <div className="flex items-baseline">
                             <span
@@ -146,14 +143,13 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                         </div>
                     </div>
 
-                    {/* Strictly Better */}
                     <div className="flex items-center justify-between border-b border-zinc-800/50 py-3">
                         <div>
                             <p className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}>Better</p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to improve at least one of the rolls
                             </p>
-                            {renderFraction(result.fractionToImprove)}
+                            <FractionBox fraction={result.fractionToImprove} />
                         </div>
                         <div className="flex items-baseline">
                             <span className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text}`}>
@@ -163,14 +159,13 @@ export function DivineReport({ selectedRolls }: { selectedRolls: PoeModifierRoll
                         </div>
                     </div>
 
-                    {/* Perfect */}
                     <div className="flex items-center justify-between py-3">
                         <div>
                             <p className={`text-xs font-bold tracking-wider uppercase ${chanceStyle.text}`}>Perfect</p>
                             <p className="mt-0.5 text-[11px] leading-tight text-zinc-500">
                                 Chance to hit perfect rolls
                             </p>
-                            {renderFraction(result.fractionPerfect)}
+                            <FractionBox fraction={result.fractionPerfect} />
                         </div>
                         <div className="flex items-baseline">
                             <span className={`text-3xl font-black tracking-tight tabular-nums ${chanceStyle.text}`}>

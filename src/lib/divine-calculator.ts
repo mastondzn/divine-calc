@@ -42,11 +42,7 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
 
     // Calculate current average percentile (for display purposes)
     const currentTotalPercentile = selectedRolls.reduce((acc, roll) => {
-        if (roll.max === roll.min) {
-            acc += 1;
-        } else {
-            acc += (roll.value - roll.min) / (roll.max - roll.min);
-        }
+        acc += roll.max === roll.min ? 1 : (roll.value - roll.min) / (roll.max - roll.min);
         return acc;
     }, 0);
     const currentAveragePercentile = currentTotalPercentile / selectedRolls.length;
@@ -66,12 +62,8 @@ export function calculateDivineStats(selectedRolls: PoeModifierRoll[]): DivineCa
         const isDecimal = roll.min % 1 !== 0 || roll.max % 1 !== 0 || roll.value % 1 !== 0;
         let step = 1;
         if (isDecimal) {
-            const match = roll.text.match(/\.(\d+)/);
-            if (match) {
-                step = Math.pow(10, -match[1].length);
-            } else {
-                step = 0.01;
-            }
+            const match = /\.(\d+)/.exec(roll.text);
+            step = match ? 10 ** -match[1].length : 0.01;
         }
 
         const minInt = Math.round(roll.min / step);

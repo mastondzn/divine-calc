@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { parsePoeItemText } from './poe-parser';
 
 const axeText = `Item Class: Two Hand Axes
@@ -71,7 +72,7 @@ describe('poe-parser', () => {
         expect(flaring?.tier).toBe(1);
         expect(flaring?.type).toBe('prefix');
         expect(flaring?.rolls.length).toBe(2);
-        if (flaring && flaring.rolls.length === 2) {
+        if (flaring?.rolls.length === 2) {
             expect(flaring.rolls[0].value).toBe(39);
             expect(flaring.rolls[0].min).toBe(34);
             expect(flaring.rolls[0].max).toBe(47);
@@ -186,13 +187,13 @@ And Ventor met his latest trophy.`;
         expect(uniqueMods.length).toBe(6);
 
         // Check fire res mod
-        expect(uniqueMods[1].rolls[0].value).toBe(42);
-        expect(uniqueMods[1].rolls[0].min).toBe(-25);
-        expect(uniqueMods[1].rolls[0].max).toBe(50);
+        expect(uniqueMods[1]!.rolls[0]!.value).toBe(42);
+        expect(uniqueMods[1]!.rolls[0]!.min).toBe(-25);
+        expect(uniqueMods[1]!.rolls[0]!.max).toBe(50);
 
         // Check cold res mod
-        expect(uniqueMods[2].rolls[0].value).toBe(-20);
-        expect(uniqueMods[2].rolls[0].min).toBe(-25);
-        expect(uniqueMods[2].rolls[0].max).toBe(50);
+        expect(uniqueMods[2]!.rolls[0]!.value).toBe(-20);
+        expect(uniqueMods[2]!.rolls[0]!.min).toBe(-25);
+        expect(uniqueMods[2]!.rolls[0]!.max).toBe(50);
     });
 });

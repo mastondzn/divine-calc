@@ -74,8 +74,8 @@ export function parsePoeItemText(text: string): PoeItem | null {
         );
     if (lines.length < 5) return null;
 
-    const itemClassMatch = lines[0].match(/Item Class:\s*(.*)/);
-    const rarityMatch = lines[1].match(/Rarity:\s*(.*)/);
+    const itemClassMatch = /Item Class:\s*(.*)/.exec(lines[0]);
+    const rarityMatch = /Rarity:\s*(.*)/.exec(lines[1]);
 
     if (!itemClassMatch || !rarityMatch) return null;
 
@@ -115,16 +115,17 @@ export function parsePoeItemText(text: string): PoeItem | null {
             else if (line.includes('Enchant')) type = 'enchant';
             else if (line.includes('Unique')) type = 'unique';
 
-            const tierMatch = line.match(/Tier:\s*(\d+)/i);
-            const tier = tierMatch ? parseInt(tierMatch[1], 10) : undefined;
+            const tierMatch = /Tier:\s*(\d+)/i.exec(line);
+            const tier = tierMatch ? Number.parseInt(tierMatch[1], 10) : undefined;
 
-            const nameMatch = line.match(/"([^"]+)"/);
+            const nameMatch = /"([^"]+)"/.exec(line);
             const modName = nameMatch ? nameMatch[1] : undefined;
 
             // Extract tags
-            const tagsMatch = line.match(/—\s*(.*?)\s*(?:—|\})/);
+            // eslint-disable-next-line regexp/no-super-linear-backtracking
+            const tagsMatch = /—\s*(.*?)\s*(?:—|\})/.exec(line);
             let tags: string[] = [];
-            if (tagsMatch && tagsMatch[1]) {
+            if (tagsMatch?.[1]) {
                 tags = tagsMatch[1].split(',').map((s) => s.trim());
             }
 
@@ -132,7 +133,7 @@ export function parsePoeItemText(text: string): PoeItem | null {
             const isFractured = line.includes('Fractured');
 
             currentMod = {
-                id: `mod-${Math.random().toString(36).substr(2, 9)}`,
+                id: `mod-${Math.random().toString(36).slice(2, 11)}`,
                 type,
                 tier,
                 name: modName,
@@ -151,10 +152,11 @@ export function parsePoeItemText(text: string): PoeItem | null {
             // Look for ranges: e.g. 39(34-47) or 159(155-169) or -20(-25-50)
             const rangeRegex = /([+-]?\d+(?:\.\d+)?)\s*\(\s*([+-]?\d+(?:\.\d+)?)\s*-\s*([+-]?\d+(?:\.\d+)?)\s*\)/g;
             let match;
+            // eslint-disable-next-line no-cond-assign
             while ((match = rangeRegex.exec(line)) !== null) {
-                const val = parseFloat(match[1]);
-                let min = parseFloat(match[2]);
-                let max = parseFloat(match[3]);
+                const val = Number.parseFloat(match[1]);
+                let min = Number.parseFloat(match[2]);
+                let max = Number.parseFloat(match[3]);
 
                 // flip min/max if min > max
                 // items such as progenesis have modifiers like this which break the calculation
@@ -165,7 +167,7 @@ export function parsePoeItemText(text: string): PoeItem | null {
                 }
 
                 currentMod.rolls.push({
-                    id: `roll-${Math.random().toString(36).substr(2, 9)}`,
+                    id: `roll-${Math.random().toString(36).slice(2, 11)}`,
                     text: match[0],
                     value: val,
                     min,

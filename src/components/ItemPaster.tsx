@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { parsePoeItemText, type PoeItem } from '../lib/poe-parser';
 import { IconAlertTriangle, IconClipboard } from '@tabler/icons-react';
+import { useState } from 'react';
+
+import { parsePoeItemText, type PoeItem } from '../lib/poe-parser';
 
 export function ItemPaster({
     initialText = '',
